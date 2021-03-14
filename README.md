@@ -29,7 +29,7 @@ La conversión de la dirección IP 201.184.37.54 en formato decimal sería:
 
 #Pruebas Aplicación:
 # ip/upload
-Al ejecutarse el proyecto en el ambiente local, consuma el siguiente endpoint http://localhost:9090/ip/upload
+Consumir el siguiente endpoint http://IP:port/ip/upload
 
 En la sección form-data agregue un archivo con el nombre file y seleccione desde el explorador de su computador el archivo con extensión .csv que tenga la estructura mencionada anteriormente. En caso contrario se visualiza un mensaje de validación.
 
@@ -41,10 +41,12 @@ Una vez el archivo se carga se genera el siguiente mensaje de éxito:
 
 En caso contrario, se visualizará el error al realizar el cargue.
 
-
 #ip/{id}
-endpoint http://localhost:9090/ip/{id}
-Consulte la información que se encuentra almacenada en la base de datos de acuerdo a la ip suministrada en la consulta. Ejemplo http://localhost:9090/ip/1.1.1.1
+Consumir el siguiente endpoint http://IP:port/ip/{id}
+
+Consulte la información que se encuentra almacenada en la base de datos de acuerdo a la ip suministrada en la consulta. 
+
+Ejemplo  http://IP:port/ip/1.1.1.1
 En caso de encontrar información en la base de datos se visualiza el siguiente mensaje, donde se retorna la lista de información almacenada:
 
 {
