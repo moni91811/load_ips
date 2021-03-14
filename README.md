@@ -1,19 +1,12 @@
 # load_ips
 
-#Descripción proyecto.
+# Descripción proyecto.
 El proyecto permite realizar la cargar y consultar información de una base de datos de geolocalización por IP que consta de combinaciones entre localización geográfica y rangos de direcciones IPv4. La carga se realiza a través de un archivo plano con una estructura de datos determinada.
 Cada registro indica una ubicación geográfica (país y su código IANA, región, ciudad, latitud, longitud) asignada a un rango de direcciones IP. 
 Para definir este rango, los campos IP_from e IP_to corresponden a las direcciones IP inicial y final de dicho rango en formato decimal. 
 
-
-#Arquitectura
-1. Lenguaje de programación : Java - Microservicios Rest con Spring Boot.
-2. Versión Java : 1.8
-3. Base de datos Relacional : MySQL
-4. Tipo de archivo permitido : csv
-5. Estructura del archivo: IP_from, IP_to, Country_code, Country, Region, City, Latitude, Longitude, TimeZone
-
-Nota: Tener en cuenta que la información IP_from, IP_to corresponde al valor decimal del rango de ips que se puede calcular de la siguiente manera:
+# Nota: 
+Tener en cuenta que la información IP_from, IP_to corresponde al valor decimal del rango de ips que se puede calcular de la siguiente manera:
 
 (segmento_1 x (256)^3) + (segmento_2 x (256)^2) + (segmento_3 x (256)^1) + (segmento_4 * (256)^0)
 
@@ -23,11 +16,18 @@ Ejemplo:
 La conversión de la dirección IP 201.184.37.54 en formato decimal sería:
 (201 x 16777216) + (184 x 65536) + (37 x 256) + (54) = 3384288566
 
-#Servicios REST
+# Arquitectura
+1. Lenguaje de programación : Java - Microservicios Rest con Spring Boot.
+2. Versión Java : 1.8
+3. Base de datos Relacional : MySQL
+4. Tipo de archivo permitido : csv
+5. Estructura del archivo: IP_from, IP_to, Country_code, Country, Region, City, Latitude, Longitude, TimeZone
+
+# Servicios REST
 1. POST ip/upload : Permite a través del archivo cargar la información.
 2. GET ip/{ip} : De acuerdo a una ip, retorna la información correspondiente a {Country_code, Region, City, Timezone}
 
-#Pruebas Aplicación:
+# Pruebas Aplicación:
 # ip/upload
 Consumir el siguiente endpoint http://host:port/ip/upload
 
