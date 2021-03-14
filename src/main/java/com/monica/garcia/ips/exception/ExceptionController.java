@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.io.JsonEOFException;
@@ -143,4 +146,35 @@ public class ExceptionController {
 		
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
+	
+	/**
+	 * Error cuando no está presente el archivo en la carga.
+	 * @param e
+	 * @return
+	 */
+	@ExceptionHandler(MultipartException.class)
+	public ResponseEntity<Response> handleMultipartException(MultipartException e) {
+		LOGGER.error("Error! " + e.getMessage());
+		
+		Response response = new Response();
+		response.setMessage("Ocurrió un error con el archivo.");
+		
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+	
+	/**
+	 * Error cuando no está presente el archivo en la carga.
+	 * @param e
+	 * @return
+	 */
+	@ExceptionHandler(MissingServletRequestPartException.class)
+	public ResponseEntity<Response> handleMissingServletRequestPartException(MissingServletRequestPartException e) {
+		LOGGER.error("Error! " + e.getMessage());
+		
+		Response response = new Response();
+		response.setMessage("El archivo file no se encuentra presente en la invocación del servicio.");
+		
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+	
 }
