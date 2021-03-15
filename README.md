@@ -66,3 +66,16 @@ En caso contrario
     "message": "No se encontró información para la IP + ip.",
     "data": null
 }
+
+En general considero que el diseño de base de datos y arquitectura mencionadas anteriormente están a la vanguardia de la tecnología y el desarrollo de software. Se utiliza el patrón Chained debido a que la arquitectura está dispuesta a que los servicios se puedan orquestar y sincronizar para generar una única respuesta.
+
+Dentro del proyecto se puede evidenciar que los paquetes contienen cierta funcionalidad y respetan los atributos de la programación limpia (clean code) y los principios SOLID que permite mantener una alta cohesión y un bajo acoplamiento con lo cual se consigue un mejor escalamiento, una mayor robustez y software más estable
+
+S – Single Responsibility Principle (SRP)
+O – Open/Closed Principle (OCP)
+L – Liskov Substitution Principle (LSP)
+I – Interface Segregation Principle (ISP)
+D – Dependency Inversion Principle (DIP)
+
+ 
+
