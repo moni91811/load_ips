@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +14,14 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.common.primitives.Longs;
 import com.monica.garcia.ips.exception.ClientErrorException;
 import com.monica.garcia.ips.models.Ip;
 import com.monica.garcia.ips.util.Util;
 
+@Service
 public class CSVLoadHelper {
 	
 	final static Logger LOGGER = LogManager.getLogger(CSVLoadHelper.class);
@@ -29,10 +31,14 @@ public class CSVLoadHelper {
 	 * @param input
 	 * @return
 	 */
-	public static List<Ip> csvToIps(MultipartFile file) {
+	public List<Ip> csvToIps(MultipartFile file) {
 		LOGGER.info("::: CSVLoadHelper - csvToIps ::: INIT UPLOAD :::");
 		int row = 0;
 		try {
+			
+			if(file == null) {
+				throw new ClientErrorException("el archivo contiene información incorrecta", HttpStatus.BAD_REQUEST);
+			}
 			
 			InputStream input = file.getInputStream();
 			BufferedReader fileReader = new BufferedReader(new InputStreamReader(input, "UTF-8"));
@@ -56,7 +62,7 @@ public class CSVLoadHelper {
 				}
 				
 				if(csvRecord.get(1) == null || (csvRecord.get(1) != null && !Util.isLong(csvRecord.get(1)))) {
-					throw new ClientErrorException("El valor del rango final de ips de la fila"+ row +" es incorrecto.", HttpStatus.BAD_REQUEST);
+					throw new ClientErrorException("El valor del rango final de ips de la fila "+ row +" es incorrecto.", HttpStatus.BAD_REQUEST);
 				}
 				
 				if(csvRecord.get(6) == null || (csvRecord.get(6) != null && !Util.isDouble(csvRecord.get(6)))) {
@@ -68,8 +74,8 @@ public class CSVLoadHelper {
 				}
 				
 				Ip ip = new Ip();
-				ip.setIpFrom(Longs.tryParse(csvRecord.get(0)));
-				ip.setIpTo(Longs.tryParse(csvRecord.get(1)));
+				ip.setIpFrom(new BigInteger(csvRecord.get(0)).longValue());
+				ip.setIpTo(new BigInteger(csvRecord.get(1)).longValue());
 				ip.setCountryCode(csvRecord.get(2));
 				ip.setCountry(csvRecord.get(3));
 				ip.setRegion(csvRecord.get(4));
@@ -80,13 +86,18 @@ public class CSVLoadHelper {
 				ips.add(ip);
 			}
 			
+			
+			if(ips == null || ips.isEmpty()) {
+				throw new ClientErrorException("Ocurrió un error, el archivo se encuentra vacío.", HttpStatus.BAD_REQUEST);
+			}
+			
 			LOGGER.info("::: CSVLoadHelper - csvToIps ::: FINISH UPLOAD :::");
 			return ips;
 			
 		} catch (IOException e) {
 			LOGGER.error("ERROR CSVLoadHelper - csvToIps::: ROW ::: "+ row +"TRAZA" + e.getMessage());
 			throw new ClientErrorException("Ocurrió un error al cargar el archivo.", HttpStatus.BAD_REQUEST);
-		}
+		} 
 	}
 
 }

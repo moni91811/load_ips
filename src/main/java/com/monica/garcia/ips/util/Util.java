@@ -1,13 +1,12 @@
 package com.monica.garcia.ips.util;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.web.multipart.MultipartFile;
-
-import com.google.common.primitives.Longs;
 
 public class Util {
 	
@@ -24,6 +23,7 @@ public class Util {
 	 * @return
 	 */
 	public static boolean isCSVFile(MultipartFile file) {
+		if (file == null || file.isEmpty()) return false;
 		String extension = file.getOriginalFilename().split("\\.")[1];
 		if(!extension.equals(EXTENSION)) {
 			return false;
@@ -52,7 +52,7 @@ public class Util {
 	 */
 	public static boolean isLong(String string) {
 		try {
-			Longs.tryParse(string);
+			new BigInteger(string); 
 		} catch (NumberFormatException e) {
 			return false;
 		}
@@ -66,6 +66,7 @@ public class Util {
 	 * @return
 	 */
 	public static boolean validateIp(final String ip) {
+		if(ip == null || ip.isEmpty()) return false;		
 		Pattern pattern = Pattern.compile(PATTERN_IP);
 		Matcher matcher = pattern.matcher(ip);
 		return matcher.matches();

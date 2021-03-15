@@ -23,15 +23,20 @@ public class LoadIpsService {
 	@Autowired
 	LoadIpsRepository repository;
 	
+	@Autowired
+	private CSVLoadHelper csvLoadHelper;
+	
 	/**
 	 * Guardar la información de las ips del archivo.
 	 * @param file
 	 */
 	public void loadIps(MultipartFile file) {
 		LOGGER.info("::: LoadIpsService - loadIps ::: INIT LOAD :::");
-		List<Ip> ips = CSVLoadHelper.csvToIps(file);		
+		List<Ip> ips = csvLoadHelper.csvToIps(file);		
 		try {			
+			LOGGER.info("::: LoadIpsService - loadIps ::: INIT SAVE DATA :::");
 			repository.saveAll(ips);
+			LOGGER.info("::: LoadIpsService - loadIps ::: FINISH SAVE DATA :::");
 		} catch (Exception e) {	
 			LOGGER.error("ERROR LoadIpsService::: " + e.getMessage());
 			throw new ClientErrorException("Ocurrió un error al almacenar la información del archivo.", HttpStatus.BAD_REQUEST);

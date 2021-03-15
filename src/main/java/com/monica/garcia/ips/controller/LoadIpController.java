@@ -67,12 +67,6 @@ public class LoadIpController {
 		LOGGER.info("LOAD SAVE IPS::  file::: " + file);
 		Response response = new Response();
 		
-		//Validar que exista el archivo.
-		if (file == null) {
-			response.setMessage("El archivo a cargar es obligatorio.");
-			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-		}
-		
 		// Validar si es el formato es correcto.
 		if (!Util.isCSVFile(file)) {
 			response.setMessage("El archivo no tiene el formato correcto.");
@@ -91,19 +85,13 @@ public class LoadIpController {
 	 * @param ip
 	 * @return
 	 */
-	@GetMapping(path = "/{ip}", consumes = "application/json", produces = "application/json")
+	@GetMapping(path = "/{ip}", produces = "application/json")
 	@ApiOperation(value = "Esta operacion consulta la información de las ip.")
 	@ResponseBody
 	public ResponseEntity<Object> getLoadIps(@Valid @PathVariable String ip) {
 		LOGGER.info("GET LOAD :: IP :: "+ip);
 		List<IpDTO> listIpsDto = new ArrayList<IpDTO>();
 		Response response = new Response();
-		
-		//Validar el campo ip.
-		if (ip == null || ip.isEmpty()) {
-			response.setMessage("El valor de la ip es obligatorio.");
-			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-		}
 		
 		// Validar si la ip es válida.
 		if (!Util.validateIp(ip)) {
